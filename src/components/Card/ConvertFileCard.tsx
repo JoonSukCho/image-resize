@@ -74,6 +74,7 @@ const ConvertFileCard = () => {
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       const selectedFiles = Array.from(e.target.files);
+      console.log('?');
 
       selectedFiles.forEach((selectedFile) => {
         setFileList((prev) =>
