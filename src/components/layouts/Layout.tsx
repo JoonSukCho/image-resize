@@ -1,6 +1,6 @@
 import React from 'react';
 import Aside from '../Aside';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import Header from '../Header';
 
 interface LayoutProps {

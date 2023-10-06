@@ -1,5 +1,5 @@
 import React from 'react';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { FcFile, FcViewDetails, FcSettings } from 'react-icons/fc';
@@ -76,7 +76,7 @@ const Header = styled.div`
   height: 4.875rem;
 `;
 
-const BrandLink = styled(Link)`
+const BrandLink = styled.a`
   display: flex;
   align-items: center;
 

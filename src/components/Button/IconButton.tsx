@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import React, { ButtonHTMLAttributes } from 'react';
 
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {

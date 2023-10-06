@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import React, { InputHTMLAttributes } from 'react';
 import { BsPlusSquare } from 'react-icons/bs';
 

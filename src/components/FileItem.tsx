@@ -1,4 +1,4 @@
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import React from 'react';
 import { Button, IconButton } from './Button';
 import { IoMdSettings } from 'react-icons/io';

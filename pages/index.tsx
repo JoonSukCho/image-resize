@@ -1,6 +1,6 @@
 import type { NextPage } from 'next';
 import React from 'react';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import ConvertFileCard from 'src/components/Card/ConvertFileCard';
 
 // reference

@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import axios from 'axios';
 import { Button, FileUploadButton, IconButton } from 'src/components/Button';
-import styled from '@emotion/styled';
+import styled from 'styled-components';
 import { Card, CardHeader, CardBody } from 'src/components/Card';
 import { TbArrowsExchange } from 'react-icons/tb';
 import FileItem from 'src/components/FileItem';
