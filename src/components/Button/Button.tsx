@@ -1,18 +1,24 @@
 import styled from 'styled-components';
 import React, { ButtonHTMLAttributes } from 'react';
+import { ColorType } from 'styles/Theme.types';
 
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  color?: string;
-  backgroundColor?: string;
-  children: React.ReactNode;
+  color?: ColorType;
+  children?: React.ReactNode;
 
   startIcon?: React.ReactNode;
   endIcon?: React.ReactNode;
 }
 
-const Button = ({ children, startIcon, endIcon, ...rest }: ButtonProps) => {
+const Button = ({
+  children,
+  color,
+  startIcon,
+  endIcon,
+  ...rest
+}: ButtonProps) => {
   return (
-    <ButtonContainer {...rest}>
+    <ButtonContainer color={color} {...rest}>
       {startIcon && <Icon iconPosition="start">{startIcon}</Icon>}
       {children}
       {endIcon && <Icon iconPosition="end">{endIcon}</Icon>}
@@ -21,24 +27,24 @@ const Button = ({ children, startIcon, endIcon, ...rest }: ButtonProps) => {
 };
 
 const ButtonContainer = styled.button<{
-  color?: string;
-  backgroundColor?: string;
+  color?: ColorType;
 }>`
   cursor: pointer;
   position: relative;
+
+  min-width: 80px;
 
   display: inline-flex;
   justify-content: center;
   align-items: center;
 
-  padding: 0.5rem 1rem;
+  padding: 0.625rem 1rem;
   border: none;
   border-radius: 0.375rem;
   outline: 0;
 
-  background-color: ${({ backgroundColor, theme }) =>
-    backgroundColor ? backgroundColor : theme.color.secondary};
-  color: ${({ color, theme }) => (color ? color : '#ffffff')};
+  background-color: ${({ theme, color }) => theme.color[color ?? 'secondary']};
+  color: #ffffff;
   font-size: 0.875rem;
   font-weight: 600;
   line-height: 1.5;

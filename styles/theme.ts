@@ -1,8 +1,11 @@
-const theme = {
+import { CustomTheme } from './Theme.types';
+
+const theme: CustomTheme = {
   color: {
     primary: '#5E48EC',
     secondary: '#344767',
     third: '#212229',
+    textPrimary: '#3b3b3b',
   },
   breakpoints: {
     xs: '@media (max-width: 0px)',

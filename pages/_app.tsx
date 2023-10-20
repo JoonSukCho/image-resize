@@ -3,17 +3,26 @@ import DefaultLayout from 'src/components/layouts/Layout';
 import GlobalStyles from 'styles/GlobalStyles';
 import { ThemeProvider } from 'styled-components';
 import theme from 'styles/theme';
+import { NextComponentType, NextPageContext } from 'next';
 
-function MyApp({ Component, pageProps }: AppProps) {
+interface MyAppProps extends AppProps {
+  Component: NextComponentType<NextPageContext, any, any> & {
+    layout: React.FC<any>;
+  };
+}
+
+function MyApp({ Component, pageProps }: MyAppProps) {
   const Layout = Component.layout || DefaultLayout;
 
   return (
-    <ThemeProvider theme={theme}>
-      <GlobalStyles />
-      <Layout>
-        <Component {...pageProps} />
-      </Layout>
-    </ThemeProvider>
+    <>
+      <ThemeProvider theme={theme}>
+        <GlobalStyles />
+        <Layout>
+          <Component {...pageProps} />
+        </Layout>
+      </ThemeProvider>
+    </>
   );
 }
 

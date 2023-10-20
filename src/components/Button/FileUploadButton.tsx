@@ -53,7 +53,7 @@ const LabelContent = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  gap: 4px;
+  gap: 8px;
 
   text-align: center;
 

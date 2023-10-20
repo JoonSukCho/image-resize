@@ -27,7 +27,7 @@ const Aside = () => {
       <Header>
         <BrandLink href="/">
           <FcSettings size={30} />
-          <span className="brandText">CONVERTER</span>
+          <span className="brandText">RESIZER</span>
         </BrandLink>
       </Header>
       <Hr />
@@ -66,7 +66,6 @@ const Container = styled.div`
   overflow-y: auto;
   padding: 0;
   box-shadow: none;
-  z-index: 9999;
   border-radius: 1rem;
 
   margin: 1rem 0 1rem 1.5rem;
@@ -138,6 +137,7 @@ const MenuListItemLink = styled(Link)<{ isActive: boolean }>`
 
   & .menuText {
     font-weight: ${({ isActive }) => (isActive ? 600 : 500)};
+    color: ${({ theme }) => theme.color.textPrimary};
   }
 `;
 

@@ -3,6 +3,7 @@ import { createGlobalStyle } from 'styled-components';
 const GlobalStyles = createGlobalStyle`
    * {
     font-family: 'Inter', 'IBM Plex Sans KR', sans-serif;
+    box-sizing: border-box;
    }
 
     html,

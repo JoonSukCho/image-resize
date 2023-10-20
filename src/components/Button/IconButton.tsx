@@ -1,28 +1,22 @@
 import styled from 'styled-components';
 import React, { ButtonHTMLAttributes } from 'react';
+import { ColorType } from 'styles/Theme.types';
 
 interface IconButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
-  color?: string;
-  backgroundColor?: string;
+  color?: ColorType;
   children: React.ReactNode;
 }
 
-const IconButton = ({
-  color,
-  backgroundColor,
-  children,
-  ...rest
-}: IconButtonProps) => {
+const IconButton = ({ color, children, ...rest }: IconButtonProps) => {
   return (
-    <ButtonContainer color={color} backgroundColor={backgroundColor} {...rest}>
+    <ButtonContainer color={color} {...rest}>
       {children}
     </ButtonContainer>
   );
 };
 
 const ButtonContainer = styled.button<{
-  color?: string;
-  backgroundColor?: string;
+  color?: ColorType;
 }>`
   position: relative;
 
@@ -36,9 +30,8 @@ const ButtonContainer = styled.button<{
   outline: 0;
   line-height: 1.5;
 
-  background-color: ${({ backgroundColor, theme }) =>
-    backgroundColor ? backgroundColor : theme.color.secondary};
-  color: ${({ color }) => (color ? color : '#ffffff')};
+  background-color: ${({ theme, color }) => theme.color[color ?? 'primary']};
+  color: #ffffff;
 
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
 
