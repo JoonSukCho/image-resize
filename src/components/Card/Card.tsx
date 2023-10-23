@@ -11,7 +11,7 @@ const Card = ({ children }: CardProps) => {
 
 const Container = styled.div`
   background: #ffffff;
-  border-radius: 1rem;
+  border-radius: 0.375rem;
   box-shadow: rgba(0, 0, 0, 0.2) 0px 1px 1px -1px;
 `;
 

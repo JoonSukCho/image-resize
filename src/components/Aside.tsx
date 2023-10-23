@@ -2,20 +2,14 @@ import React from 'react';
 import styled from 'styled-components';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
-import { FcFile, FcViewDetails, FcSettings } from 'react-icons/fc';
+import { TbExchange, TbResize } from 'react-icons/tb';
 
 const MenuList = [
   {
-    id: 'single',
-    icon: FcFile,
-    name: 'SINGLE',
+    id: 'resizer',
+    icon: TbResize,
+    name: 'Resizer',
     pathname: '/',
-  },
-  {
-    id: 'multi',
-    icon: FcViewDetails,
-    name: 'MULTI',
-    pathname: '/multi',
   },
 ];
 
@@ -26,8 +20,8 @@ const Aside = () => {
     <Container>
       <Header>
         <BrandLink href="/">
-          <FcSettings size={30} />
-          <span className="brandText">RESIZER</span>
+          <TbExchange size={30} />
+          <span className="brandText">Simple Converter</span>
         </BrandLink>
       </Header>
       <Hr />
@@ -66,7 +60,7 @@ const Container = styled.div`
   overflow-y: auto;
   padding: 0;
   box-shadow: none;
-  border-radius: 1rem;
+  border-radius: 0.375rem;
 
   margin: 1rem 0 1rem 1.5rem;
 `;

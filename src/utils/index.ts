@@ -13,3 +13,16 @@ export const formatFileSize = (fileSizeInBytes: number): string => {
 
   return fileSizeInBytes + 'Bytes';
 };
+
+export const fileDownload = (fileUrl: string, fileName: string) => {
+  const anchor = document.createElement('a');
+  document.body.appendChild(anchor);
+  anchor.download = fileName;
+  anchor.href = fileUrl;
+  anchor.click();
+
+  setTimeout(() => {
+    document.body.removeChild(anchor);
+    window.URL.revokeObjectURL(fileUrl);
+  }, 200);
+};

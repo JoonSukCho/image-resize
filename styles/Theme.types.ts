@@ -3,5 +3,10 @@ export interface CustomTheme {
   breakpoints: Record<BreakPointType, string>;
 }
 
-export type ColorType = 'primary' | 'secondary' | 'third' | 'textPrimary';
+export type ColorType =
+  | 'primary'
+  | 'secondary'
+  | 'third'
+  | 'warning'
+  | 'textPrimary';
 export type BreakPointType = 'xs' | 'sm' | 'md' | 'lg' | 'xl';

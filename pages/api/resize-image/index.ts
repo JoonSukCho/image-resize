@@ -24,6 +24,18 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
           throw err;
         }
 
+        const { options: stringifyOptions } = fields;
+        if (!stringifyOptions) {
+          throw 'Please Choose Options';
+        }
+
+        const options: ResizeImageOptions = JSON.parse(
+          Array.isArray(stringifyOptions)
+            ? stringifyOptions[0]
+            : stringifyOptions
+        );
+        const { width, height, quality, toFormat } = options;
+
         const imageFile = Array.isArray(files.image)
           ? files.image[0]
           : files.image;
@@ -32,13 +44,13 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
           return res.status(400).json({ error: '이미지를 찾을 수 없습니다.' });
         }
 
-        const optimizedImageBuffer = await sharp(imageFile.filepath)
+        // const optimizedImageBuffer = await sharp(imageFile.filepath)
+        const optimizedImageBuffer = await sharp(imageFile.filepath, {
+          animated: true,
+        })
           .rotate()
-          .resize(640, 640, { fit: 'inside' })
-          .toFormat('webp')
-          // .toFile('resizeImage.png', (err, info) => {
-          //   console.log(err, info);
-          // })
+          .resize(width, height, { fit: 'inside' })
+          .toFormat(toFormat, { quality })
           .toBuffer();
 
         console.log(
@@ -46,7 +58,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
           formatFileSize(optimizedImageBuffer.length)
         );
 
-        res.setHeader('Content-Type', 'image/webp');
+        res.setHeader('Content-Type', `image/${toFormat}`);
         res.status(200).end(optimizedImageBuffer);
       });
     } catch (error) {

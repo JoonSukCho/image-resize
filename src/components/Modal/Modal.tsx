@@ -9,16 +9,30 @@ const Modal = ({
   open,
   onClose,
   disableBackDropClick,
+  keepMount,
 }: ModalProps) => {
+  if (keepMount) {
+    return (
+      <Portal>
+        {open && (
+          <Container tabIndex={-1}>
+            <BackDrop onClick={disableBackDropClick ? undefined : onClose} />
+            <Wrapper>{children}</Wrapper>
+          </Container>
+        )}
+      </Portal>
+    );
+  }
+
   return (
-    <Portal>
-      {open && (
+    open && (
+      <Portal>
         <Container tabIndex={-1}>
           <BackDrop onClick={disableBackDropClick ? undefined : onClose} />
           <Wrapper>{children}</Wrapper>
         </Container>
-      )}
-    </Portal>
+      </Portal>
+    )
   );
 };
 

@@ -3,25 +3,26 @@ import React, { useState } from 'react';
 import { Button, IconButton } from './Button';
 import { IoMdSettings } from 'react-icons/io';
 import { AiOutlineClose } from 'react-icons/ai';
-import { formatFileSize } from 'src/utils';
+import { fileDownload, formatFileSize } from 'src/utils';
 import { resizeImageService } from 'service/imageResizeService';
 import ResizeOptionModal from './Modal/ResizeOptionModal';
 import useModal from 'hooks/useModal';
-import { LinearProgress } from './Progress';
 
 interface FileItemProps {
   originFile: File;
   handleRemoveItem: () => void;
 }
 
+const INITIAL_OPTIONS: ResizeImageOptions = {
+  width: 300,
+  height: 300,
+  toFormat: 'webp',
+  quality: 85,
+};
+
 const FileItem = ({ originFile, handleRemoveItem }: FileItemProps) => {
-  const [progress, setProgress] = useState(0);
   const [resizedImage, setResizedImage] = useState<string | null>(null);
-  const [options, setOptions] = useState<ResizeImageOptions>({
-    width: 0,
-    height: 0,
-    toFormat: 'webp',
-  });
+  const [options, setOptions] = useState<ResizeImageOptions>(INITIAL_OPTIONS);
 
   const [
     isOpenResizeOptionModal,
@@ -44,31 +45,20 @@ const FileItem = ({ originFile, handleRemoveItem }: FileItemProps) => {
   };
 
   const handleResize = async () => {
-    setProgress(0);
-
     try {
       const formData = new FormData();
       formData.append('image', originFile);
+      formData.append('options', JSON.stringify(options));
 
       const response = await resizeImageService({
         imageFormData: formData,
         options,
-        onUploadProgress: (progressEvent) => {
-          const _progress = progressEvent.progress;
-          console.log('upload', progressEvent);
-
-          if (_progress && _progress > 0) {
-            const toFixedProgress = Number(_progress.toFixed(2));
-            setProgress(toFixedProgress * 100);
-          }
-        },
-        onDownloadProgress: (progressEvent) => {
-          console.log('download', progressEvent);
-        },
       });
 
       if (response.status === 200) {
-        const blob = new Blob([response.data], { type: originFile.type });
+        const blob = new Blob([response.data], {
+          type: `image/${options.toFormat}`,
+        });
         console.log(formatFileSize(blob.size));
 
         const url = URL.createObjectURL(blob);
@@ -80,24 +70,19 @@ const FileItem = ({ originFile, handleRemoveItem }: FileItemProps) => {
     }
   };
 
-  const handleFileDownload = (file: File, url: string) => {
-    const a = document.createElement('a');
-    document.body.appendChild(a);
-    a.download = `resized_${file.name}`;
-    a.href = url;
-    a.click();
-    document.body.removeChild(a);
-    window.URL.revokeObjectURL(url);
+  const handleFileDownload = () => {
+    const splitedOriginFileName = originFile.name.split('.');
+    splitedOriginFileName.pop(); // 확장자 제거
+    const originFileName = splitedOriginFileName.join('');
+
+    if (resizedImage) {
+      fileDownload(resizedImage, `${originFileName}.${options.toFormat}`);
+    }
   };
 
   return (
     <Container>
       <FileInformationWrapper>
-        {progress !== 101 && (
-          <div>
-            <LinearProgress value={progress} />
-          </div>
-        )}
         <FileInformation>
           <FileNameAnchor onClick={openOriginImageOnNewWindow}>
             {originFile.name}({formatFileSize(originFile.size)})
@@ -123,11 +108,7 @@ const FileItem = ({ originFile, handleRemoveItem }: FileItemProps) => {
             >
               미리보기
             </Button>
-            <Button
-              onClick={() => {
-                handleFileDownload(originFile, resizedImage);
-              }}
-            >
+            <Button color="primary" onClick={handleFileDownload}>
               다운로드
             </Button>
           </>
@@ -137,6 +118,8 @@ const FileItem = ({ originFile, handleRemoveItem }: FileItemProps) => {
       <ResizeOptionModal
         open={isOpenResizeOptionModal}
         onClose={closeResizeOptionModal}
+        options={options}
+        setOptions={setOptions}
       />
     </Container>
   );

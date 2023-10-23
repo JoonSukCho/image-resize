@@ -5,6 +5,7 @@ const theme: CustomTheme = {
     primary: '#5E48EC',
     secondary: '#344767',
     third: '#212229',
+    warning: '#ff2c2c',
     textPrimary: '#3b3b3b',
   },
   breakpoints: {

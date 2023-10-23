@@ -3,4 +3,5 @@ export interface ModalProps {
   open: boolean;
   onClose?: () => void;
   disableBackDropClick?: boolean;
+  keepMount?: boolean;
 }

@@ -40,9 +40,8 @@ const ResizeImageCard = () => {
   return (
     <Card>
       <CardHeader>
-        <Button startIcon={<TbArrowsExchange />}>CONVERT ALL</Button>
+        <Title>RESIZER</Title>
       </CardHeader>
-
       <CardBody>
         <FileUploadButtonWrapper>
           <FileUploadButton multiple onChange={handleFileChange} />
@@ -66,11 +65,14 @@ const FileList = styled.div`
   flex-direction: column;
   gap: 16px;
 
-  margin-bottom: 16px;
+  margin-top: 16px;
 `;
 
-const FileUploadButtonWrapper = styled.div`
-  margin-bottom: 16px;
+const FileUploadButtonWrapper = styled.div``;
+
+const Title = styled.h1`
+  padding: 1rem 0;
+  font-size: 1.25rem;
 `;
 
 export default ResizeImageCard;
