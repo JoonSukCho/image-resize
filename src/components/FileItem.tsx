@@ -1,5 +1,5 @@
 import styled from 'styled-components';
-import React, { useState } from 'react';
+import React, { useEffect, useState } from 'react';
 import { Button, IconButton } from './Button';
 import { IoMdSettings } from 'react-icons/io';
 import { AiOutlineClose } from 'react-icons/ai';
@@ -18,10 +18,12 @@ const INITIAL_OPTIONS: ResizeImageOptions = {
   height: 300,
   toFormat: 'webp',
   quality: 85,
+  isAnimated: false,
 };
 
 const FileItem = ({ originFile, handleRemoveItem }: FileItemProps) => {
   const [resizedImage, setResizedImage] = useState<string | null>(null);
+  const [resizedImageSize, setResizedImageSize] = useState<string | null>(null);
   const [options, setOptions] = useState<ResizeImageOptions>(INITIAL_OPTIONS);
 
   const [
@@ -59,10 +61,11 @@ const FileItem = ({ originFile, handleRemoveItem }: FileItemProps) => {
         const blob = new Blob([response.data], {
           type: `image/${options.toFormat}`,
         });
-        console.log(formatFileSize(blob.size));
 
         const url = URL.createObjectURL(blob);
+
         setResizedImage(url);
+        setResizedImageSize(formatFileSize(blob.size));
       }
     } catch (error) {
       console.log(error);
@@ -79,6 +82,16 @@ const FileItem = ({ originFile, handleRemoveItem }: FileItemProps) => {
       fileDownload(resizedImage, `${originFileName}.${options.toFormat}`);
     }
   };
+
+  // 원본 이미지 사이즈로 옵션 설정
+  useEffect(() => {
+    const img = new Image();
+    img.src = URL.createObjectURL(originFile);
+
+    img.onload = () => {
+      setOptions((prev) => ({ ...prev, width: img.width, height: img.height }));
+    };
+  }, [originFile]);
 
   return (
     <Container>
@@ -109,7 +122,7 @@ const FileItem = ({ originFile, handleRemoveItem }: FileItemProps) => {
               미리보기
             </Button>
             <Button color="primary" onClick={handleFileDownload}>
-              다운로드
+              다운로드 {resizedImageSize && `(${resizedImageSize})`}
             </Button>
           </>
         )}

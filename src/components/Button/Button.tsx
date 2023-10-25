@@ -47,23 +47,29 @@ const ButtonContainer = styled.button<{
   color: #ffffff;
   font-size: 0.875rem;
   font-weight: 600;
-  line-height: 1.5;
+
+  letter-spacing: 0.25px;
 
   box-shadow: 0 4px 6px rgba(50, 50, 93, 0.1), 0 1px 3px rgba(0, 0, 0, 0.08);
 
-  &:hover {
+  &:disabled {
+    cursor: initial;
+    opacity: 0.7;
+  }
+
+  &:hover:enabled {
     opacity: 0.8;
   }
 `;
 
 const Icon = styled.span<{ iconPosition: 'start' | 'end' }>`
   display: flex;
-  margin-right: ${({ iconPosition }) => (iconPosition === 'start' ? 4 : 0)}px;
-  margin-left: ${({ iconPosition }) => (iconPosition === 'end' ? 4 : 0)}px;
+  margin-right: ${({ iconPosition }) => (iconPosition === 'start' ? 6 : 0)}px;
+  margin-left: ${({ iconPosition }) => (iconPosition === 'end' ? 6 : 0)}px;
 
   & svg {
-    width: 16px;
-    height: 16px;
+    width: 18px;
+    height: 18px;
   }
 `;
 

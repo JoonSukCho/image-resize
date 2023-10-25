@@ -31,7 +31,7 @@ const Aside = () => {
             <li key={menuListItem.name}>
               <MenuListItemLink
                 href={menuListItem.pathname}
-                isActive={router.asPath === menuListItem.pathname}
+                $isActive={router.asPath === menuListItem.pathname}
               >
                 <div className="menuIcon">
                   <menuListItem.icon size={24} />
@@ -112,7 +112,7 @@ const MenuWrapper = styled.div`
   }
 `;
 
-const MenuListItemLink = styled(Link)<{ isActive: boolean }>`
+const MenuListItemLink = styled(Link)<{ $isActive: boolean }>`
   display: flex;
   align-items: center;
   padding: 0.675rem 1rem;
@@ -122,7 +122,8 @@ const MenuListItemLink = styled(Link)<{ isActive: boolean }>`
   font-size: 0.875rem;
   white-space: nowrap;
 
-  background-color: ${({ isActive }) => (isActive ? '#f6f9fc' : 'transparent')};
+  background-color: ${({ $isActive }) =>
+    $isActive ? '#f6f9fc' : 'transparent'};
 
   & .menuIcon {
     padding: 10px;
@@ -130,7 +131,7 @@ const MenuListItemLink = styled(Link)<{ isActive: boolean }>`
   }
 
   & .menuText {
-    font-weight: ${({ isActive }) => (isActive ? 600 : 500)};
+    font-weight: ${({ $isActive }) => ($isActive ? 600 : 500)};
     color: ${({ theme }) => theme.color.textPrimary};
   }
 `;

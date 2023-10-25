@@ -5,4 +5,5 @@ interface ResizeImageOptions {
   height: number;
   toFormat: ToFormatTypes;
   quality: number;
+  isAnimated: boolean;
 }

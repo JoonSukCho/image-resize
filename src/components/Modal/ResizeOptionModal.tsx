@@ -1,4 +1,4 @@
-import React, { SetStateAction } from 'react';
+import React, { SetStateAction, useEffect } from 'react';
 import { ModalProps } from './Modal.types';
 import { Button } from '../Button';
 import { Input } from '../Input';
@@ -11,6 +11,7 @@ import {
 import styled from 'styled-components';
 import { Select } from '../Select';
 import { useForm, Controller } from 'react-hook-form';
+import { Switch } from '../Switch';
 
 interface ResizeOptionModalProps extends ModalProps {
   options: ResizeImageOptions;
@@ -50,18 +51,16 @@ const ResizeOptionModal = ({
     control,
     reset,
     formState: { isDirty, errors },
-  } = useForm<ResizeImageOptions>({ defaultValues: options });
+  } = useForm<ResizeImageOptions>();
 
   const widthRegister = register('width', {
     min: 0,
-    max: 3000,
     required: true,
     valueAsNumber: true,
   });
 
   const heightRegister = register('height', {
     min: 0,
-    max: 3000,
     required: true,
     valueAsNumber: true,
   });
@@ -77,8 +76,9 @@ const ResizeOptionModal = ({
     required: true,
   });
 
+  const isAnimatedRegister = register('isAnimated');
+
   const handleRegister = (data: ResizeImageOptions) => {
-    console.log(data);
     setOptions(data);
 
     if (onClose) {
@@ -97,6 +97,13 @@ const ResizeOptionModal = ({
       onClose();
     }
   };
+
+  // set defaultValues
+  useEffect(() => {
+    if (open) {
+      reset(options);
+    }
+  }, [open, options]);
 
   return (
     <Modal open={open} onClose={onClose} disableBackDropClick>
@@ -129,6 +136,9 @@ const ResizeOptionModal = ({
                   />
                 )}
               />
+            </Row>
+            <Row>
+              <Switch label="Animate" {...isAnimatedRegister} />
             </Row>
           </Rows>
           {Object.keys(errors).length > 0 && (

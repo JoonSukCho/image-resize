@@ -2,7 +2,8 @@ import React, { useState } from 'react';
 import { Button, FileUploadButton } from 'src/components/Button';
 import styled from 'styled-components';
 import { Card, CardHeader, CardBody } from 'src/components/Card';
-import { TbArrowsExchange } from 'react-icons/tb';
+import { MdUploadFile } from 'react-icons/md';
+import { BsArrowRepeat } from 'react-icons/bs';
 import FileItem from 'src/components/FileItem';
 import { v4 as uuidv4 } from 'uuid';
 
@@ -13,6 +14,34 @@ interface FileListItem {
 
 const ResizeImageCard = () => {
   const [fileList, setFileList] = useState<FileListItem[]>([]);
+
+  // const a = [
+  //   {
+  //     id: 'id',
+  //     originFile: new File(),
+  //     resizedImageUrl: null,
+  //     options: {
+  //       width: 300,
+  //       height: 300,
+  //       toFormat: 'webp',
+  //       quality: 85,
+  //       isAnimated: false,
+  //     },
+  //   },
+  // ];
+
+  // const setOptions = (id, newOptions) => {
+  //   setFileList((prev) =>
+  //     prev.map((prevItem) =>
+  //       prevItem.id === id
+  //         ? {
+  //             ...prevItem.options,
+  //             ...newOptions,
+  //           }
+  //         : prevItem
+  //     )
+  //   );
+  // };
 
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
@@ -40,12 +69,23 @@ const ResizeImageCard = () => {
   return (
     <Card>
       <CardHeader>
-        <Title>RESIZER</Title>
+        <ActionButtonsContainer>
+          <Button color="primary" startIcon={<MdUploadFile />}>
+            업로드
+          </Button>
+          <Button
+            color="secondary"
+            startIcon={<BsArrowRepeat />}
+            disabled={fileList.length === 0}
+          >
+            변환하기
+          </Button>
+        </ActionButtonsContainer>
       </CardHeader>
       <CardBody>
-        <FileUploadButtonWrapper>
+        <div>
           <FileUploadButton multiple onChange={handleFileChange} />
-        </FileUploadButtonWrapper>
+        </div>
         <FileList>
           {fileList.map((fileItem, index) => (
             <FileItem
@@ -68,11 +108,9 @@ const FileList = styled.div`
   margin-top: 16px;
 `;
 
-const FileUploadButtonWrapper = styled.div``;
-
-const Title = styled.h1`
-  padding: 1rem 0;
-  font-size: 1.25rem;
+const ActionButtonsContainer = styled.div`
+  display: flex;
+  gap: 1rem;
 `;
 
 export default ResizeImageCard;

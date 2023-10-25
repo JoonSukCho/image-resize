@@ -99,7 +99,7 @@ const StyledLabel = styled.label`
   display: inline-block;
   font-size: 0.875rem;
   font-weight: 700;
-  margin-bottom: 0.5rem;
+  margin-bottom: 0.875rem;
   color: ${({ theme }) => theme.color.textPrimary};
   margin-left: 0.25rem;
 `;
