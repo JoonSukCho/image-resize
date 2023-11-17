@@ -11,14 +11,14 @@ const Modal = ({
   disableBackDropClick,
 }: ModalProps) => {
   return (
-    open && (
-      <Portal>
+    <Portal>
+      {open && (
         <Container tabIndex={-1}>
           <BackDrop onClick={disableBackDropClick ? undefined : onClose} />
           <Wrapper>{children}</Wrapper>
         </Container>
-      </Portal>
-    )
+      )}
+    </Portal>
   );
 };
 

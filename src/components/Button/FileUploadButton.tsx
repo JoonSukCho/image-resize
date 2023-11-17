@@ -11,7 +11,7 @@ const FileUploadButton = ({ ...rest }: FileUploadButtonProps) => {
       <FileLabel htmlFor="file-upload">
         <LabelContent>
           <BsPlusSquare size={24} />
-          <p className="labelText">ADD FILE</p>
+          <p className="labelText">파일 업로드</p>
         </LabelContent>
       </FileLabel>
     </Container>

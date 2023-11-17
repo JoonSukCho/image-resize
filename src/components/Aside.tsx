@@ -9,7 +9,7 @@ const MenuList = [
     id: 'resizer',
     icon: TbResize,
     name: 'Resizer',
-    pathname: '/',
+    pathname: '/resizer',
   },
 ];
 

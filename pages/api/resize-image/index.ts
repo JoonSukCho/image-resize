@@ -26,7 +26,7 @@ const handler = async (req: NextApiRequest, res: NextApiResponse<any>) => {
           throw 'Please Choose Options';
         }
 
-        const options: ResizeImageOptions = JSON.parse(
+        const options: ResizeImageOption = JSON.parse(
           Array.isArray(stringifyOptions)
             ? stringifyOptions[0]
             : stringifyOptions

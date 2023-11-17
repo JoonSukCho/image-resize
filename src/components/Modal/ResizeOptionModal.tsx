@@ -12,20 +12,22 @@ import styled from 'styled-components';
 import { Select } from '../Select';
 import { useForm, Controller } from 'react-hook-form';
 import { Switch } from '../Switch';
+import {
+  useResizeImageAction,
+  useResizeImageValue,
+} from 'context/ResizeImageContext';
 
 interface ResizeOptionModalProps extends ModalProps {
-  options: ResizeImageOptions;
-  setOptions: React.Dispatch<SetStateAction<ResizeImageOptions>>;
+  id: string;
 }
 
 type ToFormatOption = { label: ToFormatTypes; value: ToFormatTypes };
 
-const ResizeOptionModal = ({
-  open,
-  onClose,
-  options,
-  setOptions,
-}: ResizeOptionModalProps) => {
+const ResizeOptionModal = ({ id, open, onClose }: ResizeOptionModalProps) => {
+  const { setResizeFileOption } = useResizeImageAction();
+  const { fileList } = useResizeImageValue();
+  const { resizeImageOption } = fileList.filter((v) => v.id === id)[0];
+
   const toFormatOptions: ToFormatOption[] = [
     {
       label: 'webp',
@@ -51,7 +53,7 @@ const ResizeOptionModal = ({
     control,
     reset,
     formState: { isDirty, errors },
-  } = useForm<ResizeImageOptions>();
+  } = useForm<ResizeImageOption>();
 
   const widthRegister = register('width', {
     min: 0,
@@ -72,14 +74,10 @@ const ResizeOptionModal = ({
     valueAsNumber: true,
   });
 
-  const _formatRegister = register('toFormat', {
-    required: true,
-  });
-
   const isAnimatedRegister = register('isAnimated');
 
-  const handleRegister = (data: ResizeImageOptions) => {
-    setOptions(data);
+  const handleRegister = (data: ResizeImageOption) => {
+    setResizeFileOption(id, data);
 
     if (onClose) {
       onClose();
@@ -90,7 +88,7 @@ const ResizeOptionModal = ({
     e.preventDefault();
 
     if (isDirty) {
-      reset(options);
+      reset(resizeImageOption);
     }
 
     if (onClose) {
@@ -101,9 +99,9 @@ const ResizeOptionModal = ({
   // set defaultValues
   useEffect(() => {
     if (open) {
-      reset(options);
+      reset(resizeImageOption);
     }
-  }, [open, options]);
+  }, [open, resizeImageOption]);
 
   return (
     <Modal open={open} onClose={onClose} disableBackDropClick>

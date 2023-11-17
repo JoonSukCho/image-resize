@@ -2,7 +2,7 @@ import axios, { AxiosProgressEvent } from 'axios';
 
 interface ResizeImageRequestParams {
   imageFormData: FormData;
-  options: ResizeImageOptions;
+  options: ResizeImageOption;
   onUploadProgress?: (progressEvent: AxiosProgressEvent) => void;
   onDownloadProgress?: (progressEvent: AxiosProgressEvent) => void;
 }

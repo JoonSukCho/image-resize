@@ -7,24 +7,21 @@ import { fileDownload, formatFileSize } from 'src/utils';
 import { resizeImageService } from 'service/imageResizeService';
 import ResizeOptionModal from './Modal/ResizeOptionModal';
 import useModal from 'hooks/useModal';
+import {
+  useResizeImageAction,
+  useResizeImageValue,
+} from 'context/ResizeImageContext';
 
 interface FileItemProps {
-  originFile: File;
-  handleRemoveItem: () => void;
+  id: string;
 }
 
-const INITIAL_OPTIONS: ResizeImageOptions = {
-  width: 300,
-  height: 300,
-  toFormat: 'webp',
-  quality: 85,
-  isAnimated: false,
-};
-
-const FileItem = ({ originFile, handleRemoveItem }: FileItemProps) => {
-  const [resizedImage, setResizedImage] = useState<string | null>(null);
-  const [resizedImageSize, setResizedImageSize] = useState<string | null>(null);
-  const [options, setOptions] = useState<ResizeImageOptions>(INITIAL_OPTIONS);
+const FileItem = ({ id }: FileItemProps) => {
+  const { removeFile, setResizeFileOption } = useResizeImageAction();
+  const { fileList } = useResizeImageValue();
+  const { originFile, resizedImageFile, resizeImageOption } = fileList.filter(
+    (v) => v.id === id
+  )[0];
 
   const [
     isOpenResizeOptionModal,
@@ -46,31 +43,8 @@ const FileItem = ({ originFile, handleRemoveItem }: FileItemProps) => {
     newTab?.focus();
   };
 
-  const handleResize = async () => {
-    try {
-      const formData = new FormData();
-      formData.append('image', originFile);
-      formData.append('options', JSON.stringify(options));
-
-      const response = await resizeImageService({
-        imageFormData: formData,
-        options,
-      });
-
-      if (response.status === 200) {
-        const blob = new Blob([response.data], {
-          type: `image/${options.toFormat}`,
-        });
-
-        const url = URL.createObjectURL(blob);
-
-        setResizedImage(url);
-        setResizedImageSize(formatFileSize(blob.size));
-      }
-    } catch (error) {
-      console.log(error);
-      alert('Something went wrong!');
-    }
+  const handleRemoveFile = () => {
+    removeFile(id);
   };
 
   const handleFileDownload = () => {
@@ -78,8 +52,11 @@ const FileItem = ({ originFile, handleRemoveItem }: FileItemProps) => {
     splitedOriginFileName.pop(); // 확장자 제거
     const originFileName = splitedOriginFileName.join('');
 
-    if (resizedImage) {
-      fileDownload(resizedImage, `${originFileName}.${options.toFormat}`);
+    if (resizedImageFile) {
+      fileDownload(
+        resizedImageFile.url,
+        `${originFileName}.${resizeImageOption.toFormat}`
+      );
     }
   };
 
@@ -89,7 +66,10 @@ const FileItem = ({ originFile, handleRemoveItem }: FileItemProps) => {
     img.src = URL.createObjectURL(originFile);
 
     img.onload = () => {
-      setOptions((prev) => ({ ...prev, width: img.width, height: img.height }));
+      setResizeFileOption(id, {
+        width: img.width,
+        height: img.height,
+      });
     };
   }, [originFile]);
 
@@ -104,35 +84,36 @@ const FileItem = ({ originFile, handleRemoveItem }: FileItemProps) => {
             <IconButton color="secondary" onClick={openResizeOptionModal}>
               <IoMdSettings size={20} />
             </IconButton>
-            <IconButton color="third" onClick={handleRemoveItem}>
+            <IconButton color="third" onClick={handleRemoveFile}>
               <AiOutlineClose size={20} />
             </IconButton>
           </Utilities>
         </FileInformation>
       </FileInformationWrapper>
       <Utilities>
-        <Button onClick={handleResize}>변환하기</Button>
-        {resizedImage && (
+        {/* <Button onClick={handleResize}>변환하기</Button> */}
+        {resizedImageFile && (
           <>
             <Button
               onClick={() => {
-                openPreviewImageOnNewWindow(resizedImage);
+                openPreviewImageOnNewWindow(resizedImageFile.url);
               }}
             >
               미리보기
             </Button>
             <Button color="primary" onClick={handleFileDownload}>
-              다운로드 {resizedImageSize && `(${resizedImageSize})`}
+              다운로드{' '}
+              {resizedImageFile &&
+                `(${formatFileSize(resizedImageFile.blob.size)})`}
             </Button>
           </>
         )}
       </Utilities>
 
       <ResizeOptionModal
+        id={id}
         open={isOpenResizeOptionModal}
         onClose={closeResizeOptionModal}
-        options={options}
-        setOptions={setOptions}
       />
     </Container>
   );
