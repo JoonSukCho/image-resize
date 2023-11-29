@@ -1,8 +1,7 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { Button, FileUploadButton } from 'src/components/Button';
 import styled from 'styled-components';
 import { Card, CardHeader, CardBody } from 'src/components/Card';
-import { MdUploadFile } from 'react-icons/md';
 import { BsArrowRepeat } from 'react-icons/bs';
 import FileItem from 'src/components/FileItem';
 import {
@@ -15,6 +14,10 @@ const ResizeImageCard = () => {
   const { fileList } = useResizeImageValue();
   const { addFiles, setResizedImage } = useResizeImageAction();
 
+  const [resizedFileCount, setResizedFileCount] = useState(0);
+  const isResizing =
+    resizedFileCount > 0 && resizedFileCount !== fileList.length;
+
   const handleFileChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     if (e.target.files) {
       addFiles(e.target.files);
@@ -22,6 +25,8 @@ const ResizeImageCard = () => {
   };
 
   const handleResizeAllFile = async () => {
+    setResizedFileCount(0);
+
     try {
       fileList.forEach(async (fileItem) => {
         const { id, originFile, resizeImageOption } = fileItem;
@@ -41,6 +46,7 @@ const ResizeImageCard = () => {
 
         const url = URL.createObjectURL(blob);
 
+        setResizedFileCount((prev) => prev + 1);
         setResizedImage(id, { blob, url });
       });
     } catch (error) {
@@ -65,6 +71,11 @@ const ResizeImageCard = () => {
             >
               변환하기
             </Button>
+            {isResizing && (
+              <div>
+                변환중... ({resizedFileCount} / {fileList.length})
+              </div>
+            )}
           </ActionButtonsContainer>
         </CardHeader>
         <CardBody>
@@ -92,6 +103,7 @@ const FileList = styled.div`
 
 const ActionButtonsContainer = styled.div`
   display: flex;
+  align-items: center;
   gap: 1rem;
 `;
 
